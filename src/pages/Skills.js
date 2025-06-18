@@ -1,12 +1,25 @@
+import { useEffect, useState } from "react";
+import axios from "../api/axiosInstance";
+
 export default function Skills() {
-  return (
-    <section id="skills" className="py-10 px-4 bg-gray-50">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-xl font-semibold mb-4">Skills</h2>
-        <ul className="list-disc list-inside">
-          <li><strong>C++</strong> (Computer) — OOP and problem solving</li>
-        </ul>
-      </div>
-    </section>
-  );
+    const [skills, setSkills] = useState([]);
+
+    useEffect(() => {
+        axios.get("/skills")
+            .then(res => setSkills(res.data))
+            .catch(err => console.error("Failed to fetch skills", err));
+    }, []);
+
+    return (
+        <section className="p-4">
+            <h2 className="text-2xl font-bold mb-4">Skills</h2>
+            {skills.map((skill, index) => (
+                <div key={index} className="mb-2">
+                    <p><strong>{skill.skillName}</strong> ({skill.category})</p>
+                    {skill.description && <p className="text-gray-600 text-sm">{skill.description}</p>}
+                </div>
+            ))}
+
+        </section>
+    );
 }

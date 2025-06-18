@@ -1,14 +1,27 @@
+import { useEffect, useState } from "react";
+import axios from "../api/axiosInstance";
+
 export default function Projects() {
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    axios.get("/projects")
+      .then(res => setProjects(res.data))
+      .catch(err => console.error("Failed to fetch projects", err));
+  }, []);
+
   return (
-    <section id="projects" className="py-10 px-4 bg-gray-50">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-xl font-semibold mb-4">Projects</h2>
-        <div className="bg-white p-4 rounded shadow">
-          <p><strong>AI-Based Nationwide Chronic Disease Management System (NCDMS)</strong></p>
-          <p>Status: Ongoing</p>
-          <p>Funding: EDGE under BCC | Granting Body: World Bank</p>
+    <section className="p-4">
+      <h2 className="text-2xl font-bold mb-4">Projects</h2>
+      {projects.map((p, i) => (
+        <div key={i} className="mb-3">
+          <p className="font-semibold">{p.title}</p>
+          <p>Status: {p.status}</p>
+          <p>Funding: {p.fundingSource}</p>
+          {p.grantingBody && <p>Granting Body: {p.grantingBody}</p>}
+          {p.notes && <p className="italic text-sm">{p.notes}</p>}
         </div>
-      </div>
+      ))}
     </section>
   );
 }

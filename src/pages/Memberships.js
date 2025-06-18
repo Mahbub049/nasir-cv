@@ -1,12 +1,25 @@
+import { useEffect, useState } from "react";
+import axios from "../api/axiosInstance";
+
 export default function Memberships() {
-  return (
-    <section id="memberships" className="py-10 px-4 bg-gray-50">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-xl font-semibold mb-4">Memberships</h2>
-        <ul>
-          <li className="mb-2">Bangladesh Red Crescent Society — Lifetime Member (ID: NA)</li>
-        </ul>
-      </div>
-    </section>
-  );
+    const [memberships, setMemberships] = useState([]);
+
+    useEffect(() => {
+        axios.get("/memberships")
+            .then(res => setMemberships(res.data))
+            .catch(err => console.error("Failed to fetch memberships", err));
+    }, []);
+
+    return (
+        <section className="p-4">
+            <h2 className="text-2xl font-bold mb-4">Memberships</h2>
+            {memberships.map((m, index) => (
+                <div key={index} className="mb-2">
+                    <p><strong>{m.name}</strong></p>
+                    <p>Type: {m.type} | ID: {m.memberId}</p>
+                </div>
+            ))}
+
+        </section>
+    );
 }
