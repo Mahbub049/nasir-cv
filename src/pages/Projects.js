@@ -11,17 +11,27 @@ export default function Projects() {
   }, []);
 
   return (
-    <section className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Projects</h2>
-      {projects.map((p, i) => (
-        <div key={i} className="mb-3">
-          <p className="font-semibold">{p.title}</p>
-          <p>Status: {p.status}</p>
-          <p>Funding: {p.fundingSource}</p>
-          {p.grantingBody && <p>Granting Body: {p.grantingBody}</p>}
-          {p.notes && <p className="italic text-sm">{p.notes}</p>}
-        </div>
-      ))}
+    <section id="projects" className="px-4 py-8 max-w-4xl mx-auto">
+      <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Projects</h2>
+
+      <div className="space-y-5">
+        {projects.map((p, i) => (
+          <div
+            key={i}
+            className="p-4 bg-white border rounded-lg shadow-sm hover:shadow-md transition"
+          >
+            <p className="text-lg font-semibold text-gray-800">{p.title}</p>
+            <p className="text-sm text-gray-600 mt-1">Status: {p.status}</p>
+            <p className="text-sm text-gray-600">Funding: {p.fundingSource}</p>
+            {p.grantingBody && (
+              <p className="text-sm text-gray-600">Granting Body: {p.grantingBody}</p>
+            )}
+            {p.notes && (
+              <p className="text-sm italic text-gray-500 mt-1">{p.notes}</p>
+            )}
+          </div>
+        ))}
+      </div>
     </section>
   );
 }

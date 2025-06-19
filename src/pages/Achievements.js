@@ -11,15 +11,23 @@ export default function Achievements() {
   }, []);
 
   return (
-    <section className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Achievements</h2>
-      {achievements.map((a, i) => (
-        <div key={i}>
-          <p className="font-semibold">{a.title}</p>
-          <p className="text-sm">Type: {a.type}</p>
-          {a.remarks && <p className="text-sm italic">{a.remarks}</p>}
-        </div>
-      ))}
+    <section id="achievements" className="px-4 py-8 max-w-4xl mx-auto">
+      <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Achievements</h2>
+
+      <div className="space-y-4">
+        {achievements.map((a, i) => (
+          <div
+            key={i}
+            className="p-4 bg-white border rounded-lg shadow-sm hover:shadow-md transition"
+          >
+            <p className="text-lg font-semibold text-gray-800">{a.title}</p>
+            <p className="text-sm text-gray-600">Type: {a.type}</p>
+            {a.remarks && (
+              <p className="text-sm italic text-gray-500 mt-1">{a.remarks}</p>
+            )}
+          </div>
+        ))}
+      </div>
     </section>
   );
 }
