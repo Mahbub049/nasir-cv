@@ -13,6 +13,7 @@ import { FiMenu, FiX } from 'react-icons/fi';
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
+
   const sections = [
     'Profile',
     'Education',
@@ -26,9 +27,9 @@ function App() {
   ];
 
   return (
-    <div className="font-sans relative overflow-x-hidden">
-      {/* Desktop Nav */}
-      <header className="sticky top-0 z-50 bg-white shadow-md hidden md:block">
+    <div className="font-sans relative overflow-x-hidden scroll-smooth">
+      {/* Desktop Navbar */}
+      <header className="fixed top-0 left-0 w-full z-50 bg-white shadow-md hidden md:block">
         <nav className="flex justify-center gap-6 py-3 text-sm font-medium">
           {sections.map(section => (
             <a
@@ -42,15 +43,14 @@ function App() {
         </nav>
       </header>
 
-      {/* Mobile Nav Toggle */}
-      <div className="md:hidden sticky top-0 z-50 bg-white shadow flex justify-between items-center px-4 py-3">
-        {/* <h1 className="text-lg font-bold">Dr. Mohammed Nasir Uddin</h1> */}
+      {/* Mobile Navbar Toggle */}
+      <div className="fixed top-0 left-0 w-full z-50 bg-white shadow-md md:hidden flex justify-between items-center px-4 py-3">
         <button onClick={() => setMenuOpen(true)} className="text-2xl">
           <FiMenu />
         </button>
       </div>
 
-      {/* Overlay Sidebar Menu */}
+      {/* Mobile Sidebar Overlay */}
       <div className={`fixed inset-0 z-50 bg-black bg-opacity-50 transition-opacity ${menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
         <div className={`fixed top-0 left-0 h-full w-64 bg-white shadow-md transform transition-transform duration-300 ${menuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
           <div className="flex justify-between items-center px-4 py-3 border-b">
@@ -74,18 +74,18 @@ function App() {
         </div>
       </div>
 
-      {/* Page Sections */}
-      <main className="scroll-smooth">
-        <div id="profile" className="scroll-mt-20"><Profile /></div>
-        <div id="education" className="scroll-mt-20"><Education /></div>
-        <div id="experience" className="scroll-mt-20"><Experience /></div>
-        <div id="courses" className="scroll-mt-20"><Courses /></div>
-        <div id="admin-roles" className="scroll-mt-20"><AdminRoles /></div>
-        <div id="memberships" className="scroll-mt-20"><Memberships /></div>
-        <div id="skills" className="scroll-mt-20"><Skills /></div>
-        <div id="achievements" className="scroll-mt-20"><Achievements /></div>
-        <div id="publications" className="scroll-mt-20"><Publications /></div>
-        <div id="projects" className="scroll-mt-20"><Projects /></div>
+      {/* Sections with scroll-mt to prevent hiding */}
+      <main>
+        <div id="profile" className="anchor-offset"><Profile /></div>
+        <div id="education" className="anchor-offset"><Education /></div>
+        <div id="experience" className="anchor-offset"><Experience /></div>
+        <div id="courses" className="anchor-offset"><Courses /></div>
+        <div id="admin-roles" className="anchor-offset"><AdminRoles /></div>
+        <div id="memberships" className="anchor-offset"><Memberships /></div>
+        <div id="skills" className="anchor-offset"><Skills /></div>
+        <div id="achievements" className="anchor-offset"><Achievements /></div>
+        <div id="publications" className="anchor-offset"><Publications /></div>
+        <div id="projects" className="anchor-offset"><Projects /></div>
       </main>
 
       <footer className="text-center text-xs text-gray-500 py-6">
