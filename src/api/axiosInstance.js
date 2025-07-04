@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://localhost:5000/api", // https://nasir-cv-server.onrender.com/api
+  baseURL: "https://nasir-cv-server.onrender.com/api/api", // https://nasir-cv-server.onrender.com/api
 });
 
 export default instance;
