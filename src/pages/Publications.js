@@ -8,10 +8,30 @@ export default function Publications() {
   const [activeTab, setActiveTab] = useState("journal");
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Load publications from server
   useEffect(() => {
-    axios.get("/publications")
-      .then(res => setPublications(res.data))
-      .catch(err => console.error("Failed to fetch publications", err));
+    axios
+      .get("/publications")
+      .then((res) => setPublications(res.data))
+      .catch((err) => console.error("Failed to fetch publications", err));
+  }, []);
+
+  // Load tab from URL hash on first load
+  useEffect(() => {
+    const hash = window.location.hash;
+    const tabMatch = hash.match(/tab=(\w+)/);
+    if (tabMatch) {
+      setActiveTab(tabMatch[1]);
+    }
+
+    // ✅ Listen for external tab change event
+    const handleTabChange = (e) => {
+      setActiveTab(e.detail);
+      window.history.replaceState(null, "", `#publications?tab=${e.detail}`);
+    };
+
+    window.addEventListener("change-tab", handleTabChange);
+    return () => window.removeEventListener("change-tab", handleTabChange);
   }, []);
 
   // Reset pagination when tab changes
@@ -19,9 +39,9 @@ export default function Publications() {
     setCurrentPage(1);
   }, [activeTab]);
 
-  // Filtered publications by tab
+  // Filtered publications by active tab
   const filtered = publications.filter(
-    pub => pub.category.toLowerCase() === activeTab
+    (pub) => pub.category.toLowerCase() === activeTab
   );
 
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
@@ -34,10 +54,13 @@ export default function Publications() {
 
       {/* Tabs */}
       <div className="flex justify-center gap-3 mb-6">
-        {["journal", "conference", "book"].map(tab => (
+        {["journal", "conference", "book"].map((tab) => (
           <button
             key={tab}
-            onClick={() => setActiveTab(tab)}
+            onClick={() => {
+              setActiveTab(tab);
+              window.history.replaceState(null, "", `#publications?tab=${tab}`);
+            }}
             className={`px-4 py-2 rounded-full text-sm font-semibold transition ${
               activeTab === tab
                 ? "bg-blue-600 text-white"
@@ -57,10 +80,14 @@ export default function Publications() {
           <div key={i} className="mb-6 border-b pb-4">
             <p className="font-semibold text-lg">{pub.title}</p>
             <p className="text-sm text-gray-700">By: {pub.authors}</p>
-            <p className="text-sm text-gray-600">{pub.source} ({pub.year})</p>
+            <p className="text-sm text-gray-600">
+              {pub.source} ({pub.year})
+            </p>
 
             {pub.chapterTitle && (
-              <p className="text-sm italic text-gray-500">Chapter: {pub.chapterTitle}</p>
+              <p className="text-sm italic text-gray-500">
+                Chapter: {pub.chapterTitle}
+              </p>
             )}
             {pub.publisher && (
               <p className="text-sm text-gray-500">Publisher: {pub.publisher}</p>
@@ -86,7 +113,7 @@ export default function Publications() {
       {totalPages > 1 && (
         <div className="flex justify-center mt-6 gap-2">
           <button
-            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
             className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
           >
@@ -108,7 +135,7 @@ export default function Publications() {
           ))}
 
           <button
-            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
             disabled={currentPage === totalPages}
             className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
           >

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Profile from './pages/Profile';
 import Education from './pages/Education';
 import Experience from './pages/Experience';
@@ -9,10 +9,12 @@ import Achievements from './pages/Achievements';
 import Publications from './pages/Publications';
 import Projects from './pages/Projects';
 import Skills from './pages/Skills';
-import { FiMenu, FiX } from 'react-icons/fi';
+import { FiX } from 'react-icons/fi';
+import Navbar from './components/Navbar';
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isProfileVisible, setIsProfileVisible] = useState(true);
 
   const sections = [
     'Profile',
@@ -22,37 +24,61 @@ function App() {
     'Admin Roles',
     'Memberships',
     'Achievements',
-    'Publications',
+    {
+      name: 'Publications',
+      sub: [
+        { name: 'Journals', tab: 'journal' },
+        { name: 'Conferences', tab: 'conference' },
+        { name: 'Books', tab: 'book' }
+      ]
+    },
     'Projects'
   ];
 
+  const scrollToWithOffset = (id) => {
+    const yOffset = -80;
+    const el = document.getElementById(id);
+    if (el) {
+      const y = el.getBoundingClientRect().top + window.scrollY + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const profileSection = document.getElementById("profile");
+      const rect = profileSection?.getBoundingClientRect();
+      if (rect && rect.top <= 80 && rect.bottom > 80) {
+        setIsProfileVisible(true);
+      } else {
+        setIsProfileVisible(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div className="font-sans relative overflow-x-hidden scroll-smooth">
-      {/* Desktop Navbar */}
-      <header className="fixed top-0 left-0 w-full z-50 bg-white shadow-md hidden md:block">
-        <nav className="flex justify-center gap-6 py-3 text-sm font-medium">
-          {sections.map(section => (
-            <a
-              key={section}
-              href={`#${section.toLowerCase().replace(/\s+/g, '-')}`}
-              className="hover:text-blue-600 transition"
-            >
-              {section}
-            </a>
-          ))}
-        </nav>
-      </header>
+      <Navbar
+        sections={sections}
+        scrollToWithOffset={scrollToWithOffset}
+        setMenuOpen={setMenuOpen}
+        isProfileVisible={isProfileVisible}
+      />
 
-      {/* Mobile Navbar Toggle */}
-      <div className="fixed top-0 left-0 w-full z-50 bg-white shadow-md md:hidden flex justify-between items-center px-4 py-3">
-        <button onClick={() => setMenuOpen(true)} className="text-2xl">
-          <FiMenu />
-        </button>
-      </div>
-
-      {/* Mobile Sidebar Overlay */}
-      <div className={`fixed inset-0 z-50 bg-black bg-opacity-50 transition-opacity ${menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
-        <div className={`fixed top-0 left-0 h-full w-64 bg-white shadow-md transform transition-transform duration-300 ${menuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      {/* Mobile Sidebar */}
+      <div
+        className={`fixed inset-0 z-50 bg-black bg-opacity-50 transition-opacity ${menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+          }`}
+      >
+        <div
+          className={`fixed top-0 left-0 h-full w-64 bg-white shadow-md transform transition-transform duration-300 ${menuOpen ? 'translate-x-0' : '-translate-x-full'
+            }`}
+        >
           <div className="flex justify-between items-center px-4 py-3 border-b">
             <h2 className="text-lg font-bold">Menu</h2>
             <button onClick={() => setMenuOpen(false)} className="text-2xl">
@@ -60,21 +86,44 @@ function App() {
             </button>
           </div>
           <nav className="flex flex-col space-y-4 p-4 text-sm font-medium">
-            {sections.map(section => (
-              <a
-                key={section}
-                href={`#${section.toLowerCase().replace(/\s+/g, '-')}`}
-                onClick={() => setMenuOpen(false)}
-                className="hover:text-blue-600 transition"
-              >
-                {section}
-              </a>
-            ))}
+            {sections.map(section =>
+              typeof section === 'string' ? (
+                <a
+                  key={section}
+                  href={`#${section.toLowerCase().replace(/\s+/g, '-')}`}
+                  onClick={() => setMenuOpen(false)}
+                  className="hover:text-blue-600 transition"
+                >
+                  {section}
+                </a>
+              ) : (
+                <div key={section.name} className="flex flex-col">
+                  <span className="font-semibold">{section.name}</span>
+                  {section.sub.map(item => (
+                    <a
+                      key={item.name}
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        scrollToWithOffset("publications");
+                        window.dispatchEvent(
+                          new CustomEvent("change-tab", { detail: item.tab })
+                        );
+                        setMenuOpen(false);
+                      }}
+                      className="pl-4 text-sm hover:text-blue-600 transition"
+                    >
+                      {item.name}
+                    </a>
+                  ))}
+                </div>
+              )
+            )}
           </nav>
         </div>
       </div>
 
-      {/* Sections with scroll-mt to prevent hiding */}
+      {/* Page Sections */}
       <main>
         <div id="profile" className="anchor-offset"><Profile /></div>
         <div id="education" className="anchor-offset"><Education /></div>

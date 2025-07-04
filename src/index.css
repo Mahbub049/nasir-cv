@@ -7,5 +7,5 @@ html {
 }
 
 .anchor-offset {
-  scroll-margin-top: 80px; /* Adjust based on actual navbar height */
+  scroll-margin-top: 100px; /* offset for fixed navbar */
 }
