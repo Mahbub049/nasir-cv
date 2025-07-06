@@ -21,7 +21,7 @@ export default function Courses() {
 
     return (
         <section id="courses" className="px-4 py-8 max-w-6xl mx-auto">
-            <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">Courses Taught</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">Teaching</h2>
 
             {Object.entries(groupedCourses).map(([program, courses]) => (
                 <div key={program} className="mb-10">

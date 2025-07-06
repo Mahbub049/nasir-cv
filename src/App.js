@@ -20,7 +20,7 @@ function App() {
     'Profile',
     'Education',
     'Experience',
-    'Courses',
+    'Teaching',
     'Admin Roles',
     'Memberships',
     'Achievements',
@@ -47,13 +47,18 @@ function App() {
   useEffect(() => {
     const handleScroll = () => {
       const profileSection = document.getElementById("profile");
-      const rect = profileSection?.getBoundingClientRect();
-      if (rect && rect.top <= 80 && rect.bottom > 80) {
-        setIsProfileVisible(true);
-      } else {
-        setIsProfileVisible(false);
+      if (profileSection) {
+        const rect = profileSection.getBoundingClientRect();
+        const navbarHeight = 80;
+
+        const isVisible =
+          rect.top <= navbarHeight &&
+          rect.bottom >= navbarHeight;
+
+        setIsProfileVisible(isVisible);
       }
     };
+
 
     window.addEventListener("scroll", handleScroll);
     handleScroll();
@@ -128,7 +133,7 @@ function App() {
         <div id="profile" className="anchor-offset"><Profile /></div>
         <div id="education" className="anchor-offset"><Education /></div>
         <div id="experience" className="anchor-offset"><Experience /></div>
-        <div id="courses" className="anchor-offset"><Courses /></div>
+        <div id="teaching" className="anchor-offset"><Courses /></div>
         <div id="admin-roles" className="anchor-offset"><AdminRoles /></div>
         <div id="memberships" className="anchor-offset"><Memberships /></div>
         <div id="skills" className="anchor-offset"><Skills /></div>

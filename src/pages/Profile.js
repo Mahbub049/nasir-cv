@@ -41,12 +41,12 @@ export default function Profile() {
           playsInline
           className="absolute top-0 left-0 w-full h-full object-cover z-0"
         >
-          <source src="/background.mp4" type="video/mp4" />
+          <source src="/background.webm" type="video/webm" />
           Your browser does not support the video tag.
         </video>
 
         {/* 🧑 Profile on top of video */}
-        <section className="relative mt-12 z-10 w-full h-full flex justify-center items-center px-4 py-10 bg-black/60 text-white">
+        <section id="profile" className="relative z-10 w-full min-h-[100vh] flex justify-center items-center px-4 py-10 pt-[80px] bg-black/60 text-white">
           <div className="max-w-screen-lg mx-auto flex flex-col items-center text-center">
             <motion.img
               initial={{ opacity: 0, scale: 0.9 }}
