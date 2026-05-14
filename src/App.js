@@ -105,21 +105,21 @@ function App() {
                 <div key={section.name} className="flex flex-col">
                   <span className="font-semibold">{section.name}</span>
                   {section.sub.map(item => (
-                    <a
-                      key={item.name}
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        scrollToWithOffset("publications");
-                        window.dispatchEvent(
-                          new CustomEvent("change-tab", { detail: item.tab })
-                        );
-                        setMenuOpen(false);
-                      }}
-                      className="pl-4 text-sm hover:text-blue-600 transition"
-                    >
-                      {item.name}
-                    </a>
+<a
+  key={item.name}
+  href="#"
+  onClick={(e) => {
+    e.preventDefault();
+    scrollToWithOffset("publications");
+    window.dispatchEvent(
+      new CustomEvent("change-tab", { detail: item.tab })
+    );
+    setMenuOpen(false);
+  }}
+  className="pl-4 text-sm hover:text-blue-600 transition"
+>
+  {item.name}
+</a>
                   ))}
                 </div>
               )

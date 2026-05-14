@@ -6,8 +6,8 @@ export default function Navbar({ sections, scrollToWithOffset, setMenuOpen, isPr
             {/* Desktop Navbar */}
             <header
                 className={`fixed top-0 left-0 w-full z-50 h-12 transition-all duration-300 ${isProfileVisible
-                        ? 'bg-black/60 backdrop-blur-md text-white'
-                        : 'bg-white shadow-md text-black'
+                    ? 'bg-black/60 backdrop-blur-md text-white'
+                    : 'bg-white shadow-md text-black'
                     } hidden md:block`}
             >
                 <nav className="flex justify-center gap-6 py-4 text-sm font-medium">
@@ -31,18 +31,18 @@ export default function Navbar({ sections, scrollToWithOffset, setMenuOpen, isPr
                                     onClick={(e) => e.stopPropagation()}
                                 >
                                     {section.sub.map((item) => (
-                                        <a
+                                        <button
                                             key={item.name}
-                                            href="#"
-                                            onClick={(e) => {
-                                                e.preventDefault();
+                                            onClick={() => {
                                                 scrollToWithOffset("publications");
-                                                window.dispatchEvent(new CustomEvent("change-tab", { detail: item.tab }));
+                                                window.dispatchEvent(
+                                                    new CustomEvent("change-tab", { detail: item.tab })
+                                                );
                                             }}
-                                            className="block px-4 py-2 text-sm hover:bg-gray-100 whitespace-nowrap text-black"
+                                            className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 whitespace-nowrap text-black"
                                         >
                                             {item.name}
-                                        </a>
+                                        </button>
                                     ))}
                                 </div>
                             </div>
