@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import axios from "../api/axiosInstance";
+import instance from "../api/axiosInstance";
 
 export default function AdminRoles() {
   const [groupedRoles, setGroupedRoles] = useState({});
 
   useEffect(() => {
-    axios.get("/admin-roles")
+    instance.get("/admin-roles")
       .then(res => {
         const grouped = {};
         res.data.forEach(role => {

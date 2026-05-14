@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import axios from "../api/axiosInstance";
+import instance from "../api/axiosInstance";
 
 export default function Projects() {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    axios.get("/projects")
+    instance.get("/projects")
       .then(res => setProjects(res.data))
       .catch(err => console.error("Failed to fetch projects", err));
   }, []);

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import axios from "../api/axiosInstance";
+import instance from "../api/axiosInstance";
 
 export default function Skills() {
   const [skills, setSkills] = useState({});
 
   useEffect(() => {
-    axios.get("/skills")
+    instance.get("/skills")
       .then(res => {
         const grouped = {};
         res.data.forEach(skill => {

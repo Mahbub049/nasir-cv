@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import axios from "../api/axiosInstance";
+import instance from "../api/axiosInstance";
 
 export default function Memberships() {
   const [memberships, setMemberships] = useState([]);
 
   useEffect(() => {
-    axios.get("/memberships")
+    instance.get("/memberships")
       .then(res => {
         console.log("✅ Memberships fetched:", res.data); // Debug log
         setMemberships(res.data);

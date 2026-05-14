@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "../api/axiosInstance";
+import instance from "../api/axiosInstance";
 import { FaBriefcase } from "react-icons/fa";
 import { motion } from "framer-motion";
 
@@ -7,7 +7,7 @@ export default function Experience() {
   const [experiences, setExperiences] = useState([]);
 
   useEffect(() => {
-    axios.get("/experience")
+    instance.get("/experience")
       .then(res => {
         const sorted = res.data.sort((a, b) => new Date(b.from) - new Date(a.from));
         setExperiences(sorted);

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import axios from "../api/axiosInstance";
+import instance from "../api/axiosInstance";
 import { FaBookOpen } from "react-icons/fa";
 
 export default function Courses() {
     const [groupedCourses, setGroupedCourses] = useState({});
 
     useEffect(() => {
-        axios.get("/courses")
+        instance.get("/courses")
             .then(res => {
                 const grouped = {};
                 res.data.forEach(course => {

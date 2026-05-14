@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "../api/axiosInstance";
+import instance from "../api/axiosInstance";
 import { FaUniversity, FaCalendarAlt, FaGraduationCap } from "react-icons/fa";
 import { motion } from "framer-motion";
 
@@ -7,7 +7,7 @@ export default function Education() {
   const [education, setEducation] = useState([]);
 
   useEffect(() => {
-    axios.get("/education")
+    instance.get("/education")
       .then(res => {
         // Sort by passing year descending
         const sorted = res.data.sort((a, b) => b.passingYear - a.passingYear);
