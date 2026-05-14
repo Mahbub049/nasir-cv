@@ -7,7 +7,7 @@ export default function Education() {
   const [education, setEducation] = useState([]);
 
   useEffect(() => {
-    instance.get("/education")
+    instance.get("/api/education")
       .then(res => {
         // Sort by passing year descending
         const sorted = res.data.sort((a, b) => b.passingYear - a.passingYear);

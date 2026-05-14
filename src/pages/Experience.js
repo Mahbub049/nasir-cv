@@ -7,7 +7,7 @@ export default function Experience() {
   const [experiences, setExperiences] = useState([]);
 
   useEffect(() => {
-    instance.get("/experience")
+    instance.get("/api/experience")
       .then(res => {
         const sorted = res.data.sort((a, b) => new Date(b.from) - new Date(a.from));
         setExperiences(sorted);

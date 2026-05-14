@@ -6,7 +6,7 @@ export default function Courses() {
     const [groupedCourses, setGroupedCourses] = useState({});
 
     useEffect(() => {
-        instance.get("/courses")
+        instance.get("/api/courses")
             .then(res => {
                 const grouped = {};
                 res.data.forEach(course => {

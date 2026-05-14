@@ -106,20 +106,18 @@ function App() {
                   <span className="font-semibold">{section.name}</span>
                   {section.sub.map(item => (
 <button
-  key={item.name}
-  href="#"
-  onClick={(e) => {
-    e.preventDefault();
-    scrollToWithOffset("publications");
-    window.dispatchEvent(
-      new CustomEvent("change-tab", { detail: item.tab })
-    );
-    setMenuOpen(false);
-  }}
-  className="pl-4 text-sm hover:text-blue-600 transition"
->
-  {item.name}
-</button>
+                    key={item.name}
+                    onClick={() => {
+                      scrollToWithOffset("publications");
+                      window.dispatchEvent(
+                        new CustomEvent("change-tab", { detail: item.tab })
+                      );
+                      setMenuOpen(false);
+                    }}
+                    className="pl-4 text-sm hover:text-blue-600 transition text-left"
+                  >
+                    {item.name}
+                  </button>
                   ))}
                 </div>
               )

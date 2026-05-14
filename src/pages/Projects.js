@@ -5,7 +5,7 @@ export default function Projects() {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    instance.get("/projects")
+    instance.get("/api/projects")
       .then(res => setProjects(res.data))
       .catch(err => console.error("Failed to fetch projects", err));
   }, []);

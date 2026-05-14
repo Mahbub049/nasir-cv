@@ -5,7 +5,7 @@ export default function AdminRoles() {
   const [groupedRoles, setGroupedRoles] = useState({});
 
   useEffect(() => {
-    instance.get("/admin-roles")
+    instance.get("/api/admin-roles")
       .then(res => {
         const grouped = {};
         res.data.forEach(role => {

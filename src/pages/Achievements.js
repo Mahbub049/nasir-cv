@@ -5,7 +5,7 @@ export default function Achievements() {
   const [achievements, setAchievements] = useState([]);
 
   useEffect(() => {
-    axios.get("/achievements")
+    axios.get("/api/achievements")
       .then(res => setAchievements(res.data))
       .catch(err => console.error("Failed to fetch achievements", err));
   }, []);

@@ -11,7 +11,7 @@ export default function Publications() {
   // Load publications from server
   useEffect(() => {
     axios
-      .get("/publications")
+      .get("/api/publications")
       .then((res) => setPublications(res.data))
       .catch((err) => console.error("Failed to fetch publications", err));
   }, []);

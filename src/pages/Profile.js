@@ -14,7 +14,7 @@ export default function Profile() {
 
   useEffect(() => {
     axios
-      .get("/profile")
+      .get("/api/profile")
       .then((res) => {
         setProfile(res.data);
         setLoading(false);

@@ -5,7 +5,7 @@ export default function Memberships() {
   const [memberships, setMemberships] = useState([]);
 
   useEffect(() => {
-    instance.get("/memberships")
+    instance.get("/api/memberships")
       .then(res => {
         console.log("✅ Memberships fetched:", res.data); // Debug log
         setMemberships(res.data);

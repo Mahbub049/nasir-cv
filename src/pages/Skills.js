@@ -5,7 +5,7 @@ export default function Skills() {
   const [skills, setSkills] = useState({});
 
   useEffect(() => {
-    instance.get("/skills")
+    instance.get("/api/skills")
       .then(res => {
         const grouped = {};
         res.data.forEach(skill => {
