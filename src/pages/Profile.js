@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "../api/axiosInstance";
 import {
-  FaPhoneAlt,
   FaEnvelope,
   FaGoogle,
   FaResearchgate,
+  FaMapMarkerAlt,
+  FaUniversity,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 
@@ -25,144 +26,198 @@ export default function Profile() {
       });
   }, []);
 
-  if (loading)
-    return <p className="text-center mt-6 text-gray-500">Loading...</p>;
-  if (!profile)
-    return <p className="text-center text-red-500 mt-6">No profile data found.</p>;
-
-  return (
-    <>
-      {/* 🔄 Background Video Section */}
-      <div className="relative w-full h-[100vh] overflow-hidden">
+  if (loading) {
+    return (
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black text-white">
         <video
           autoPlay
           muted
           loop
           playsInline
-          className="absolute top-0 left-0 w-full h-full object-cover z-0"
+          className="absolute inset-0 h-full w-full object-cover blur-[4px] scale-105"
         >
           <source src="/background.webm" type="video/webm" />
-          Your browser does not support the video tag.
         </video>
 
-        {/* 🧑 Profile on top of video */}
-        <section id="profile" className="relative z-10 w-full min-h-[100vh] flex justify-center items-center px-4 py-10 pt-[80px] bg-black/60 text-white">
-          <div className="max-w-screen-lg mx-auto flex flex-col items-center text-center">
-            <motion.img
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              src={profile.image || "/default-profile.jpg"}
-              className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-white shadow-md"
-              alt="Profile"
-            />
-            <h1 className="text-2xl md:text-3xl font-bold mt-4">{profile.name}</h1>
-            <p className="text-gray-200 font-medium">{profile.designation}</p>
-            {profile.department && (
-              <p className="text-sm text-gray-300 italic">{profile.department}</p>
-            )}
-            <p className="text-gray-300">{profile.university}</p>
-            <p className="text-gray-400 text-sm mt-1">{profile.address}</p>
+        <div className="absolute inset-0 bg-black/65" />
 
-            {(profile.googleScholar || profile.researchGate) && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="mt-4"
-              >
-                <div className="flex flex-wrap justify-center gap-4 text-sm">
+        <p className="relative z-10 text-sm tracking-[0.22em] uppercase text-white/70">
+          Loading Profile...
+        </p>
+      </section>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <p className="mt-6 text-center text-red-500">
+        No profile data found.
+      </p>
+    );
+  }
+
+  return (
+    <section className="relative min-h-screen overflow-hidden bg-black text-white">
+      {/* Background Video */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 h-full w-full object-cover blur-[2px] scale-105"
+      >
+        <source src="/background.webm" type="video/webm" />
+        Your browser does not support the video tag.
+      </video>
+
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/60" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/50 to-black/70" />
+
+      <div className="relative z-10 min-h-screen px-4 pb-14 pt-28 sm:px-6 lg:px-8">
+        <div className="mx-auto flex min-h-[calc(100vh-8rem)] max-w-6xl items-center">
+          <div className="grid w-full items-center gap-12 lg:grid-cols-[380px_1fr] lg:gap-20">
+            
+            {/* Left Side - Photo + Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55 }}
+              className="mx-auto w-full max-w-[360px] lg:mx-0"
+            >
+              <div className="relative">
+                {/* Main image design */}
+                <div className="relative overflow-hidden rounded-[34px] border border-white/20 bg-white/[0.045] p-3 shadow-[0_30px_80px_rgba(0,0,0,0.45)]">
+                  <div className="overflow-hidden rounded-[26px]">
+                    <img
+                      src={profile.image || "/default-profile.jpg"}
+                      alt={profile.name || "Profile"}
+                      className="h-[430px] w-full object-cover object-top"
+                    />
+                  </div>
+
+                  {/* Bottom photo base */}
+                  <div className="mt-3 flex items-center justify-between px-1">
+                    <div className="h-[1px] w-20 bg-white/30"></div>
+                    <div className="h-2 w-2 rounded-full bg-white/60"></div>
+                    <div className="h-[1px] w-20 bg-white/30"></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Buttons below photo */}
+              {(profile.googleScholar ||
+                profile.researchGate ||
+                profile.emails?.length > 0) && (
+                <div className="mt-6 flex flex-wrap justify-center gap-3">
                   {profile.googleScholar && (
                     <a
                       href={profile.googleScholar}
                       target="_blank"
                       rel="noreferrer"
-                      className="flex items-center gap-2 text-blue-300 hover:text-blue-500 transition"
+                      className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-white/85"
                     >
                       <FaGoogle /> Google Scholar
                     </a>
                   )}
+
                   {profile.researchGate && (
                     <a
                       href={profile.researchGate}
                       target="_blank"
                       rel="noreferrer"
-                      className="flex items-center gap-2 text-blue-300 hover:text-blue-500 transition"
+                      className="inline-flex items-center gap-2 rounded-full border border-white/25 px-5 py-2.5 text-sm font-semibold text-white/88 transition hover:bg-white hover:text-black"
                     >
                       <FaResearchgate /> ResearchGate
                     </a>
                   )}
-                </div>
-              </motion.div>
-            )}
 
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-2xl">
-              <motion.div
-                initial={{ x: -30, opacity: 0 }}
-                whileInView={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className="border rounded-lg p-4 shadow-sm bg-white/10 backdrop-blur"
-              >
-                <h3 className="font-semibold text-white mb-2 flex items-center justify-center gap-2">
-                  <FaPhoneAlt /> Contact Numbers
-                </h3>
-                {profile.phones?.map((num, i) => (
-                  <p key={i} className="text-gray-100">{num}</p>
-                ))}
-              </motion.div>
-
-              <motion.div
-                initial={{ x: 30, opacity: 0 }}
-                whileInView={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className="border rounded-lg p-4 shadow-sm bg-white/10 backdrop-blur"
-              >
-                <h3 className="font-semibold text-white mb-2 flex items-center justify-center gap-2">
-                  <FaEnvelope /> Emails
-                </h3>
-                {profile.emails?.map((email, i) => (
-                  <p key={i} className="text-gray-100">{email}</p>
-                ))}
-              </motion.div>
-            </div>
-
-            {profile.overview && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className="mt-10 text-justify max-w-3xl px-4 md:px-0"
-              >
-                <h3 className="text-lg font-semibold text-white mb-2 text-left">Overview</h3>
-                <p className="text-gray-200 leading-relaxed whitespace-pre-line text-sm md:text-base">
-                  {profile.overview}
-                </p>
-              </motion.div>
-            )}
-
-            {profile.interests?.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className="mt-8 text-center"
-              >
-                <h3 className="font-semibold text-white mb-2">Research Interests</h3>
-                <div className="flex flex-wrap justify-center gap-2">
-                  {profile.interests.map((interest, idx) => (
-                    <span
-                      key={idx}
-                      className="bg-white/10 border border-white/30 text-white px-3 py-1 rounded-full text-sm shadow-sm hover:bg-white/20 transition"
+                  {profile.emails?.[0] && (
+                    <a
+                      href={`mailto:${profile.emails[0]}`}
+                      className="inline-flex items-center gap-2 rounded-full border border-white/25 px-5 py-2.5 text-sm font-semibold text-white/88 transition hover:bg-white hover:text-black"
                     >
-                      {interest}
-                    </span>
-                  ))}
+                      <FaEnvelope /> Email
+                    </a>
+                  )}
                 </div>
-              </motion.div>
-            )}
+              )}
+            </motion.div>
+
+            {/* Right Side - Content */}
+            <motion.div
+              initial={{ opacity: 0, y: 26 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="max-w-3xl text-center lg:text-left"
+            >
+              <h1 className="text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-[56px]">
+                {profile.name}
+              </h1>
+
+              {profile.designation && (
+                <p className="mt-4 text-xl font-semibold text-white/90">
+                  {profile.designation}
+                </p>
+              )}
+
+              {profile.department && (
+                <p className="mt-2 text-base text-white/75">
+                  {profile.department}
+                </p>
+              )}
+
+              <div className="mt-5 flex flex-col items-center gap-2 text-sm text-white/70 lg:items-start">
+                {profile.university && (
+                  <div className="flex items-center gap-2">
+                    <FaUniversity className="text-white/45" />
+                    <span>{profile.university}</span>
+                  </div>
+                )}
+
+                {/* {profile.address && (
+                  <div className="flex items-center gap-2">
+                    <FaMapMarkerAlt className="text-white/45" />
+                    <span>{profile.address}</span>
+                  </div>
+                )} */}
+              </div>
+
+              {/* Overview */}
+              {profile.overview && (
+                <div className="mt-4">
+                  <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-white/82">
+                    Overview
+                  </h2>
+                  <p className="max-w-2xl text-justify text-[15.5px] leading-8 text-white/82 sm:text-base">
+                    {profile.overview}
+                  </p>
+                </div>
+              )}
+
+              {/* Research Interests */}
+              {profile.interests?.length > 0 && (
+                <div className="mt-10">
+                  <h2 className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-white/82">
+                    Research Interests
+                  </h2>
+
+                  <div className="flex flex-wrap justify-center gap-2.5 lg:justify-start">
+                    {profile.interests.map((interest, idx) => (
+                      <span
+                        key={idx}
+                        className="rounded-full border border-white/18 bg-white/[0.06] px-4 py-2 text-sm text-white/80 transition hover:bg-white hover:text-black"
+                      >
+                        {interest}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </motion.div>
           </div>
-        </section>
+        </div>
       </div>
-    </>
+    </section>
   );
 }

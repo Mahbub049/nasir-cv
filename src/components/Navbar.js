@@ -1,62 +1,105 @@
-import { FiMenu } from 'react-icons/fi';
+import { FiChevronDown, FiMenu } from "react-icons/fi";
 
-export default function Navbar({ sections, scrollToWithOffset, setMenuOpen, isProfileVisible }) {
-    return (
-        <>
-            {/* Desktop Navbar */}
-            <header
-                className={`fixed top-0 left-0 w-full z-50 h-12 transition-all duration-300 ${isProfileVisible
-                    ? 'bg-black/60 backdrop-blur-md text-white'
-                    : 'bg-white shadow-md text-black'
-                    } hidden md:block`}
+export default function Navbar({
+  sections,
+  scrollToWithOffset,
+  setMenuOpen,
+  isProfileVisible,
+}) {
+  const getSectionId = (section) =>
+    section.toLowerCase().replace(/\s+/g, "-");
+
+  return (
+    <>
+      {/* Desktop Navbar */}
+      <header className="fixed top-0 left-0 w-full z-50 hidden md:block transition-all duration-300">
+        <div className="w-full px-4 py-4">
+          <div className="mx-auto max-w-6xl">
+            <nav
+              className={`w-full flex justify-center items-center gap-1 px-5 py-2.5 rounded-full border transition-all duration-300 ${
+                isProfileVisible
+                  ? "bg-black/20 border-white/20 backdrop-blur-md text-white shadow-lg"
+                  : "bg-white/95 border-gray-200 text-gray-900 shadow-md backdrop-blur-md"
+              }`}
             >
-                <nav className="flex justify-center gap-6 py-4 text-sm font-medium">
-                    {sections.map(section =>
-                        typeof section === 'string' ? (
-                            <a
-                                key={section}
-                                href={`#${section.toLowerCase().replace(/\s+/g, '-')}`}
-                                className="hover:text-blue-400 transition"
-                            >
-                                {section}
-                            </a>
-                        ) : (
-                            <div key={section.name} className="relative group">
-                                <div className="cursor-pointer hover:text-blue-400 transition">
-                                    {section.name}
-                                </div>
-                                <div
-                                    className="absolute left-0 mt-2 bg-white shadow-lg rounded z-50 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-200"
-                                    onMouseEnter={(e) => e.stopPropagation()}
-                                    onClick={(e) => e.stopPropagation()}
-                                >
-                                    {section.sub.map((item) => (
-                                        <button
-                                            key={item.name}
-                                            onClick={() => {
-                                                scrollToWithOffset("publications");
-                                                window.dispatchEvent(
-                                                    new CustomEvent("change-tab", { detail: item.tab })
-                                                );
-                                            }}
-                                            className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 whitespace-nowrap text-black"
-                                        >
-                                            {item.name}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        )
-                    )}
-                </nav>
-            </header>
+              {sections.map((section) =>
+                typeof section === "string" ? (
+                  <button
+                    key={section}
+                    onClick={() => {
+                      if (section === "Profile") {
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      } else {
+                        scrollToWithOffset(getSectionId(section));
+                      }
+                    }}
+                    className={`px-3 py-1.5 rounded-full text-sm font-semibold transition-all duration-200 ${
+                      isProfileVisible
+                        ? "text-white hover:bg-white/15"
+                        : "text-gray-800 hover:bg-blue-50 hover:text-blue-700"
+                    }`}
+                  >
+                    {section}
+                  </button>
+                ) : (
+                  <div key={section.name} className="relative group">
+                    <button
+                      className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-semibold transition-all duration-200 ${
+                        isProfileVisible
+                          ? "text-white hover:bg-white/15"
+                          : "text-gray-800 hover:bg-blue-50 hover:text-blue-700"
+                      }`}
+                    >
+                      {section.name}
+                      <FiChevronDown className="text-sm mt-0.5" />
+                    </button>
 
-            {/* Mobile Navbar Toggle */}
-            <div className="fixed top-0 left-0 w-full z-50 bg-white shadow-md md:hidden flex justify-between items-center px-4 py-3">
-                <button onClick={() => setMenuOpen(true)} className="text-2xl">
-                    <FiMenu />
-                </button>
-            </div>
-        </>
-    );
+                    <div className="absolute left-1/2 -translate-x-1/2 mt-3 w-44 rounded-xl bg-white shadow-xl border border-gray-100 overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                      {section.sub.map((item) => (
+                        <button
+                          key={item.name}
+                          onClick={() => {
+                            scrollToWithOffset("publications");
+                            window.dispatchEvent(
+                              new CustomEvent("change-tab", {
+                                detail: item.tab,
+                              })
+                            );
+                          }}
+                          className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition whitespace-nowrap"
+                        >
+                          {item.name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )
+              )}
+            </nav>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile Navbar */}
+      <div
+        className={`fixed top-0 left-0 w-full z-50 md:hidden flex justify-between items-center px-4 py-3 transition-all duration-300 ${
+          isProfileVisible
+            ? "bg-black/20 text-white backdrop-blur-md"
+            : "bg-white text-gray-900 shadow-md"
+        }`}
+      >
+        <button
+          onClick={() => setMenuOpen(true)}
+          className="text-2xl"
+          aria-label="Open menu"
+        >
+          <FiMenu />
+        </button>
+
+        <span className="text-sm font-semibold tracking-wide">
+          Dr. M. Nasir Uddin
+        </span>
+      </div>
+    </>
+  );
 }
