@@ -4,7 +4,6 @@ import {
   FaEnvelope,
   FaGoogle,
   FaResearchgate,
-  FaMapMarkerAlt,
   FaUniversity,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
