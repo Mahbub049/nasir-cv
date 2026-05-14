@@ -105,7 +105,7 @@ function App() {
                 <div key={section.name} className="flex flex-col">
                   <span className="font-semibold">{section.name}</span>
                   {section.sub.map(item => (
-<a
+<button
   key={item.name}
   href="#"
   onClick={(e) => {
@@ -119,7 +119,7 @@ function App() {
   className="pl-4 text-sm hover:text-blue-600 transition"
 >
   {item.name}
-</a>
+</button>
                   ))}
                 </div>
               )
