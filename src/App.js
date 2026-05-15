@@ -186,12 +186,12 @@ function App() {
         <div id="memberships" className="anchor-offset">
           <Memberships />
         </div>
-        <div id="skills" className="anchor-offset">
+        {/* <div id="skills" className="anchor-offset">
           <Skills />
-        </div>
-        <div id="achievements" className="anchor-offset">
+        </div> */}
+        {/* <div id="achievements" className="anchor-offset">
           <Achievements />
-        </div>
+        </div> */}
         <div id="publications" className="anchor-offset">
           <Publications />
         </div>
