@@ -5,10 +5,10 @@ import Experience from "./pages/Experience";
 import Courses from "./pages/Courses";
 import AdminRoles from "./pages/AdminRoles";
 import Memberships from "./pages/Memberships";
-import Achievements from "./pages/Achievements";
+// import Achievements from "./pages/Achievements";
 import Publications from "./pages/Publications";
 import Projects from "./pages/Projects";
-import Skills from "./pages/Skills";
+// import Skills from "./pages/Skills";
 import { FiX } from "react-icons/fi";
 import Navbar from "./components/Navbar";
 
